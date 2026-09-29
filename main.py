@@ -35,10 +35,9 @@ days_skipped : int = 0
 
 crit_chance : float = 0.1
 enemy_crit_chance : float = 0.05
+criting = False
 
-# functions
-
-
+# fonctions
 
 def choose_enemy():
     """
@@ -81,10 +80,13 @@ def dont_fight():
     days_skipped += 1
     return True
 
+
+# variables pour gérer l'affichage des lignes de texte
 line1 = "\n"
 line2 = "\n"
 line3 = "\n"
-criting = False
+
+
 def handle_fight():
     """
     Gère le combat contre un monstre, applique les dégâts et affiche les informations sur le joueur.
@@ -163,7 +165,6 @@ def handle_fight():
 
 
     if hp <= 0: 
-        #print("Vous êtes mort !")
         return False
         
 
@@ -188,9 +189,11 @@ while difficulty_select:
         print("Choix invalide. Veuillez choisir 'facile', 'normal' ou 'difficile'.")
 
 
+#setup des variables pour le jeu
 hp = max_hp
-
 loop = True
+
+
 while loop:
 
     playing = True
