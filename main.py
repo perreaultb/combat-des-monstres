@@ -1,16 +1,10 @@
 """
 jeu combat des monstres
-par Bradley Perreault
-groupe 4567
+Auteur: Bradley Perreault
+Groupe: 4567
 """
 
-
-
-# imports
-
 import random
-
-# variables
 
 hp_max : int = 20
 hp : int = 20
@@ -37,7 +31,10 @@ crit_chance : float = 0.1
 enemy_crit_chance : float = 0.05
 criting = False
 
-# fonctions
+# variables pour gérer l'affichage des lignes de texte
+line1 = "\n"
+line2 = "\n"
+line3 = "\n"
 
 def choose_enemy():
     """
@@ -47,7 +44,6 @@ def choose_enemy():
     chosen_enemy = random.choice(list(enemies.keys()))
     enemy_hp = enemies[chosen_enemy][0]
     enemy_damage = enemies[chosen_enemy][1]
- 
 
 
 def handle_day_start():
@@ -58,8 +54,8 @@ def handle_day_start():
     choose_enemy()
     print(f"Jour {days_survived} :")
     print(f"Vous avez {hp} points de vie.")
-    choice = input(f"Un {chosen_enemy} apparait devant vous ! Voulez-vous le combattre ? (o/n/règles)")
-    return choice
+    _choice = input(f"Un {chosen_enemy} apparait devant vous ! Voulez-vous le combattre ? (o/n/règles)")
+    return _choice
 
 
 def dont_fight():
@@ -72,7 +68,7 @@ def dont_fight():
         return False
     penalty = random.randint(1, 3)
     hp -= penalty
-    print(f"Vous avez choisi de ne pas combattre le monstre.")
+    print("Vous avez choisi de ne pas combattre le monstre.")
     print(f"Vous subissez une pénalité de {penalty} points de vie. Il vous reste {hp} points de vie.")
     if not hp > 0:
         return False
@@ -81,10 +77,6 @@ def dont_fight():
     return True
 
 
-# variables pour gérer l'affichage des lignes de texte
-line1 = "\n"
-line2 = "\n"
-line3 = "\n"
 
 
 def handle_fight():
@@ -141,32 +133,31 @@ def handle_fight():
             print(f"Vous avez {inventory['hp_potion']} potions de vie.")
             if inventory["hp_potion"] > 0:
                 print("Voulez-vous utiliser une potion de vie ? (o/n)")
-            elif hp == max_hp:
+            elif hp == hp_max:
                 print("Vous avez le maximum de HV! Pesser sur Entrer pour continuer.")
             else:
                 print("Vous n'avez pas de potions de vie. Pesser sur Entrer pour continuer.")
-            
+
             choice_inv = input().lower()
-            if choice_inv == "o" and inventory["hp_potion"] > 0 and not hp == max_hp:
-                if (hp + potion_heal) > max_hp:
-                    hp = max_hp
+            if choice_inv == "o" and inventory["hp_potion"] > 0 and not hp == hp_max:
+                if (hp + potion_heal) > hp_max:
+                    hp = hp_max
                     inventory["hp_potion"] -= 1
-                    print(f"Vous utilisez une potion de vie et récupérez {max_hp - (hp - potion_heal)} points de vie. Il vous reste {hp} points de vie et {inventory['hp_potion']} potions de vie.")
+                    print(f"Vous utilisez une potion de vie et récupérez {hp_max - (hp - potion_heal)} points de vie. Il vous reste {hp} points de vie et {inventory['hp_potion']} potions de vie.")
                 else:
                     hp += potion_heal
                     inventory["hp_potion"] -= 1
                     print(f"Vous utilisez une potion de vie et récupérez {potion_heal} points de vie. Il vous reste {hp} points de vie et {inventory['hp_potion']} potions de vie.")
-            elif choice_inv == "n" and inventory["hp_potion"] > 0 and not hp == max_hp:
+            elif choice_inv == "n" and inventory["hp_potion"] > 0 and not hp == hp_max:
                 print("Vous décidez de ne pas utiliser de potion de vie.")
-            
+
 
         else:
             line3 = "Choix invalide. Veuillez choisir 'attaquer' ou 'inventaire'."
 
 
-    if hp <= 0: 
+    if hp <= 0:
         return False
-        
 
     days_survived += 1
     return True
@@ -177,20 +168,20 @@ difficulty_select = True
 while difficulty_select:
     difficulty = input("Choisissez la difficulté (facile, normal, difficile) : ").lower()
     if difficulty == "facile":
-        max_hp = 125
+        hp_max = 125
         difficulty_select = False
     elif difficulty == "normal":
-        max_hp = 65
+        hp_max = 65
         difficulty_select = False
     elif difficulty == "difficile":
-        max_hp = 35    
+        hp_max = 35
         difficulty_select = False
     else:
         print("Choix invalide. Veuillez choisir 'facile', 'normal' ou 'difficile'.")
 
 
 #setup des variables pour le jeu
-hp = max_hp
+hp = hp_max
 loop = True
 
 
@@ -203,7 +194,6 @@ while loop:
             print("Félicitations ! Vous avez survécu 10 jours !")
             playing = False
             break
-            
 
         choice = handle_day_start().lower()
         day_start = True
@@ -250,7 +240,7 @@ while loop:
                 choice = input(f"Un {chosen_enemy} apparait devant vous ! Voulez-vous le combattre ? (o/n/règles)").lower()
     replay = input("rejouer ? (o/n)")
     if replay.lower() == "o":
-        hp = max_hp
+        hp = hp_max
         days_survived = 1
         line1 = "\n"
         line2 = "\n"
@@ -262,22 +252,21 @@ while loop:
         while difficulty_select:
             difficulty = input("Choisissez la difficulté (facile, normal, difficile) : ").lower()
             if difficulty == "facile":
-                max_hp = 125
+                hp_max = 125
                 difficulty_select = False
             elif difficulty == "normal":
-                max_hp = 65
+                hp_max = 65
                 difficulty_select = False
             elif difficulty == "difficile":
-                max_hp = 35    
+                hp_max = 35
                 difficulty_select = False
             else:
                 print("Choix invalide. Veuillez choisir 'facile', 'normal' ou 'difficile'.")
-        
-        hp = max_hp
+
+        hp = hp_max
     elif replay.lower() == "n":
         loop = False
         print("Au revoir !")
     else:
         print("Choix invalide. Au revoir !")
         loop = False
-
